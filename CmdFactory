@@ -25,13 +25,13 @@ import java.lang.reflect.InvocationTargetException;
 
 public class CmdFactory {
     private static Properties properties = null;
-    private static TreeMap<String,Class> classes = null;
+    private static TreeMap<String,CalcCommand> classes = null;
 
     static {
-        classes = new TreeMap<String, Class>();
+        classes = new TreeMap<String, CalcCommand>();
         InputStream conformacesAsStream = null;
         try {
-            conformacesAsStream = new FileInputStream("CmdFactory.properties");
+            conformacesAsStream = new FileInputStream("C:\\Users\\Alex\\IdeaProjects\\Problem2_Calculator\\src\\com\\company\\CmdFactory.properties");
             properties = new Properties();
             properties.load(conformacesAsStream);
         } catch (IOException e){
@@ -53,21 +53,24 @@ public class CmdFactory {
      * @return CalcCommand object <code>command</code> if it exists.
      */
     public static CalcCommand getCommand(String cmdName) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        CalcCommand command;
-        Class<?> cmdClass;
+//        CalcCommand command;
+//        Class<?> cmdClass;
 
         String commandUp = cmdName.toUpperCase();
         String key = properties.getProperty(commandUp);
         if(null==key){
             throw new NoSuchElementException("Invalid command request: " + commandUp);
         }
-        if (!classes.containsKey(key)){
-            cmdClass = Class.forName(key);
-            classes.put(cmdName,cmdClass);
-        } else {
-            cmdClass = classes.get(cmdName);
+        if (!classes.containsKey(key)) {
+            //cmdClass = Class.forName(key);
+            Class<?> command = Class.forName(key);
+            classes.put(key, (CalcCommand) command.getDeclaredConstructor().newInstance());
         }
-        command = (CalcCommand) cmdClass.getDeclaredConstructor().newInstance();
-        return command;
+//        } else {
+//            cmdClass = classes.get(cmdName);
+//        }
+//        command = (CalcCommand) cmdClass.getDeclaredConstructor().newInstance();
+
+        return classes.get(key);
     }
 }
