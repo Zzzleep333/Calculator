@@ -1,0 +1,16 @@
+package com.company;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+public class GetFactoryCash implements CalcCommand {
+    @Override
+    public void execute(Context context, List<String> myArgs) throws CommandExecuteException {
+        Iterator<Map.Entry<String, CalcCommand>> iterator = CmdFactory.getIterator();
+        while(iterator.hasNext()){
+            Map.Entry<String, CalcCommand> pair = iterator.next();
+            System.out.println(pair.getKey());
+        }
+    }
+}
