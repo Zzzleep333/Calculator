@@ -7,3 +7,4 @@ PRINT = com.company.Print
 PUSH = com.company.Push
 SQRT = com.company.Sqrt
 + = com.company.Summ
+CASH = com.company.GetFactoryCash
