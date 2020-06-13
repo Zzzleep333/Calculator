@@ -2,21 +2,13 @@ package com.company;
 
 
 
-//package ru.nsu.ccfit.terekhov.calculator.Main;
-
-//import ru.nsu.ccfit.terekhov.calculator.Commands.CalcCommand;
-
 import java.io.FileInputStream;
 
 import java.io.IOException;
 
 import java.io.InputStream;
 
-import java.util.NoSuchElementException;
-
-import java.util.Properties;
-
-import java.util.TreeMap;
+import java.util.*;
 
 //import calculator.Commands.CalcCommand;
 
@@ -25,10 +17,10 @@ import java.lang.reflect.InvocationTargetException;
 
 public class CmdFactory {
     private static Properties properties = null;
-    private static TreeMap<String,CalcCommand> classes = null;
+    private static HashMap<String,CalcCommand> classes = null;
 
     static {
-        classes = new TreeMap<String, CalcCommand>();
+        classes = new HashMap<String, CalcCommand>();
         InputStream conformacesAsStream = null;
         try {
             conformacesAsStream = new FileInputStream("C:\\Users\\Alex\\IdeaProjects\\Problem2_Calculator\\src\\com\\company\\CmdFactory.properties");
@@ -64,13 +56,17 @@ public class CmdFactory {
         if (!classes.containsKey(key)) {
             //cmdClass = Class.forName(key);
             Class<?> command = Class.forName(key);
-            classes.put(key, (CalcCommand) command.getDeclaredConstructor().newInstance());
+            classes.put(cmdName, (CalcCommand) command.getDeclaredConstructor().newInstance());
         }
 //        } else {
 //            cmdClass = classes.get(cmdName);
 //        }
 //        command = (CalcCommand) cmdClass.getDeclaredConstructor().newInstance();
 
-        return classes.get(key);
+        return classes.get(cmdName);
     }
+    public static Iterator<Map.Entry<String, CalcCommand>> getIterator(){
+       return classes.entrySet().iterator();
+    }
+
 }
